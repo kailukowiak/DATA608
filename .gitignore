@@ -31,7 +31,7 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-/rsconnect
-rsconnect/
-/rsconnect/
-rsconnect/documents/hw1.rmd/rpubs.com/rpubs/*
+
+# Rpubs
+
+rsconnect/*
