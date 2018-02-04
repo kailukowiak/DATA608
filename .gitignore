@@ -33,4 +33,5 @@ vignettes/*.pdf
 *.knit.md
 /rsconnect
 rsconnect/
-rsconnect/*
+/rsconnect/
+rsconnect/documents/hw1.rmd/rpubs.com/rpubs/*
