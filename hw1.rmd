@@ -115,6 +115,7 @@ ggplot(data = df3, aes(x = Industry, y = Mean)) +
   geom_bar(stat = 'identity') +
   theme_tufte()+
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  geom_hline(yintercept=seq(1, 9000, 1000), col="white", lwd=0.5) 
+  geom_hline(yintercept=seq(1, 9000, 1000), col="white", lwd=0.5) +
+  ylab('Revenue/Employee ,000 $')
 ```
 
