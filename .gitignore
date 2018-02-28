@@ -35,3 +35,7 @@ vignettes/*.pdf
 # Rpubs
 
 rsconnect/*
+
+*.zip
+PLUTO17v1.1
+.ipynb_checkpoints
