@@ -39,3 +39,4 @@ rsconnect/*
 *.zip
 PLUTO17v1.1
 .ipynb_checkpoints
+config.py
