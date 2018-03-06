@@ -40,3 +40,4 @@ rsconnect/*
 PLUTO17v1.1
 .ipynb_checkpoints
 config.py
+.Rproj.user
