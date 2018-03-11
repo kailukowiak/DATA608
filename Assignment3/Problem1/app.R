@@ -37,10 +37,11 @@ stockGraph <- function(df, CoD, year, OrderPlot){
 }
 
 ui <-  fluidPage(
+  fluidRow(
+  headerPanel("Cause of Death by Year for American States")),
   plotlyOutput('plot', height = 300),
   hr(),
   fluidRow(
-  headerPanel("Cause of Death by Year for American States"),
   sidebarPanel(
     selectInput('CoD', 'Cause of Death', choices = CoDChoice,
                 selected = "Endocrine, nutritional and metabolic diseases"),
