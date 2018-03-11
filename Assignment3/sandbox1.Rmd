@@ -1,0 +1,176 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+df <- read_csv('data.csv')
+
+```
+```{r}
+df1 <- df %>% 
+  dplyr::filter(ICD.Chapter == 'Neoplasms' & Year == 2010)
+```
+
+
+```{r}
+p <- plot_ly(
+  x = df1$State,
+  y = df1$Deaths,
+  name = "Deaths 2010",
+  type = "bar"
+)
+p
+```
+
+
+```{r}
+library(plotly)
+p <- plot_ly(midwest, x = ~percollege, color = ~state, type = "box")
+p
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+```{r}
+    p <- ggplot(data = df1, aes(x = State, y = Deaths)) +
+      geom_bar(stat = 'identity')
+p
+    # ggplotly(p) %>% 
+    #   layout(height = input$plotHeight, autosize=TRUE)
+```
+
+```{r}
+df <- read_csv('/Users/kailukowiak/DATA_608/Assignment3/data.csv')
+CoDChoice <- unique(df$ICD.Chapter)
+yearChoice <- unique(df$Year)
+outputVar <- c('Deaths', 'Population', 'Crude.Rate')
+
+stockGraph <- function(){
+  df1 <- df %>% dplyr::filter(Year == 2010 & ICD.Chapter == 'Neoplasms')
+  p <- ggplot(df1, aes(x = State, y = Deaths)) +
+    geom_bar(stat = 'identity')
+  p
+ # grid.arrange(p, ncol=1)
+}
+stockGraph()
+```
+
+```{r}
+
+
+
+
+```
+
+```{r}
+
+ g <- list(
+      scope = 'usa',
+      projection = list(type = 'albers usa'),
+      lakecolor = toRGB('white')
+    )
+p1 <- plot_ly(z = state.area, text = state.name, locations = state.abb,
+            type = 'choropleth', locationmode = 'USA-states') %>%
+      layout(geo = g)
+```
+
+```{r}
+stockGraph <- function(df, CoD, year){
+  df <- read_csv('/Users/kailukowiak/DATA_608/Assignment3/data.csv')
+  df <- df[df$Year == year,]
+  df <- df[df$ICD.Chapter == CoD,]
+  #%>% dplyr::filter(Year == year & ICD.Chapter == CoD)
+  # p <- ggplot(data = df, aes(x = State, y = Crude.Rate)) +
+  #   geom_bar(stat = 'identity') +
+  #   theme_tufte()
+  # #ggplotly(p)
+  # grid.arrange(p, ncol=1)
+  p1 <- plot_ly(
+    x = df$State,
+    y = df$Crude.Rate,
+    name = "Death Rate",
+    type = "bar"
+  )
+  
+  g <- list(
+    scope = 'usa',
+    projection = list(type = 'albers usa'),
+    lakecolor = toRGB('white')
+  )
+  p2 <- plot_ly(z = state.area, text = state.name, locations = state.abb,
+          type = 'choropleth', locationmode = 'USA-states') %>%
+    layout(geo = g)
+  p <- subplot(p1, p2, nrows = 2) %>% 
+    layout(title = "Deaths by Various Diseases",
+         showlegend=FALSE,showlegend2=FALSE)
+  #p
+  p
+}
+
+stockGraph(df, "Neoplasms", 2010)
+```
+
+```{r}
+pTest <- plot_ly(
+    x = df$State,
+    y = df$Crude.Rate,
+    name = "Death Rate",
+    type = "bar")
+pTest
+```
+
+```{r}
+df <- read_csv('Problem1/data.csv')
+df <- df %>% 
+  dplyr::filter(Year == 2010 & ICD.Chapter == 'Neoplasms') %>% 
+  dplyr::arrange(desc(Crude.Rate))
+
+
+xform <- list(categoryorder = "array",
+              categoryarray = df$State)
+
+p1 <- plot_ly(
+  x = df$State,
+  y = df$Crude.Rate,
+  name = "Death Rate",
+  type = "bar") %>% 
+  layout(xaxis = xform)
+
+p1 %>% add_trace(x = seq(0, 250, 50),#c(0.4, 9.6, NA, 0.4, 9.6, NA, 0.4, 9.6, NA, 0.4, 9.6, NA, 0.4, 9.6),
+            y =seq(0, 250, 50), mode = "lines",
+            marker = list(color = "white"), showlegend = F) %>% 
+  layout(annotations = list(
+           list(x = 1, xanchor = "left", y = 250, showarrow = F, ax = 0, ay = 0, align = "left",
+                text = "Average scores<br>on negative emotion traits<br>from 3896 participants<br>(Watson et al., 1988)")))
+```
+
+```{r}
+library(psych)
+library(reshape2)
+ 
+ds <- melt(colMeans(msq[,c(2,7,34,36,42,43,46,55,68)],na.rm = T)*10)
+ds$trait <- rownames(ds)
+hovertxt <- paste(ds$trait, ":", round(ds$value,3))
+ 
+plot_ly(ds, x = 1:nrow(ds), y = df$value, type = "bar", marker = list(color = "#737373"), 
+        hoverinfo = "text", showlegend = F, text = hovertxt) %>% 
+  
+  add_trace(x = c(0.4, 9.6, NA, 0.4, 9.6, NA, 0.4, 9.6, NA, 0.4, 9.6, NA, 0.4, 9.6), 
+            y = c(1, 1, NA, 2, 2, NA, 3, 3, NA, 4, 4, 5, 5), mode = "lines", 
+            marker = list(color = "white"), showlegend = F) %>% 
+  
+  layout(xaxis = list(title = "", tickmode = "array", tickvals = 1:nrow(ds), ticktext = ds$trait,
+                      tickfont = list(family = "serif", size = 10)),
+         yaxis = list(title = "", showgrid = F), 
+         annotations = list(
+           list(x = 1, xanchor = "left", y = 6, showarrow = F, ax = 0, ay = 0, align = "left",
+                text = "Average scores<br>on negative emotion traits<br>from 3896 participants<br>(Watson et al., 1988)")))
+```
+

@@ -1,0 +1,40 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(slopegraph)
+df <- read_csv('../data.csv')
+year1 = 2000
+year2 = 2010
+CoD = 'Neoplasms'
+
+avg1 <- df %>% 
+  filter(Year == year1 | Year == year2) %>% 
+  filter(ICD.Chapter == CoD) %>% 
+  group_by(Year) %>% 
+  summarise(usaMean = mean(Deaths) / mean(Population) * 100000) %>% t()
+  
+  
+df1 <- df %>% 
+  filter(Year == year1 | Year == year2) %>% 
+  filter(ICD.Chapter == CoD) %>% 
+  select(State, Year, Crude.Rate) %>% 
+  spread(key = Year, value = Crude.Rate)
+df1 <- rbind(df1, c('USA', avg1[2,]))
+df1 <- data.frame(df1, row.names = df1$State) %>% 
+  select(-State)
+df1$X2000 <- as.numeric(df1$X2000)
+df1$X2010 <- as.numeric(df1$X2010)
+cols <- `[<-`(rep("grey30", nrow(df1) - 1), nrow(df1), "red")
+slopegraph(df1, col.lines = cols,
+           
+           leftlabels = rownames(df1), decimals = 2)
+```
+
+```{r}
+getwd()
+```
+
