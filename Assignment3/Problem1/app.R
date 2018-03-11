@@ -37,6 +37,9 @@ stockGraph <- function(df, CoD, year, OrderPlot){
 }
 
 ui <-  fluidPage(
+  plotlyOutput('plot', height = 300),
+  hr(),
+  fluidRow(
   headerPanel("Cause of Death by Year for American States"),
   sidebarPanel(
     selectInput('CoD', 'Cause of Death', choices = CoDChoice,
@@ -44,11 +47,9 @@ ui <-  fluidPage(
     selectInput('orderPlot', 'Order of Data', choices = c('Alphabetical', 'Ascending', 'Descending'),
                 selected = "Assending"),
     selectInput('year', 'Year', choices = yearChoice, selected = 2010)
-  ),
-  mainPanel(
-    plotlyOutput('plot', height = 300)
+  ))
+    
   )
-)
 
 
 # Define the server code
