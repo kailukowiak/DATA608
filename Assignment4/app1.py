@@ -4,7 +4,7 @@ import dash_html_components as html
 import plotly.graph_objs as go
 import pandas as pd
 from datetime import datetime as dt
-
+import numpy as np
 
 # Data preperation
 
@@ -28,7 +28,10 @@ colNames = list(df.Site.unique())
 
 dfFilled = dfPivot.melt(id_vars='Date1', value_vars=colNames)
 
-dfFinal = pd.merge(dfFilled, df, how='left', left_on=['Date1', 'Site'],
+dfFinal = pd.merge(dfFilled,
+                   df,
+                   how='left',
+                   left_on=['Date1', 'Site'],
                    right_on=['Date', 'Site'])
 
 dfFinal = dfFinal.ffill()
@@ -41,7 +44,7 @@ dfFinal['Date'] = 'Recored Taken On: ' + dfFinal['Date'].astype(str)
 app = dash.Dash()
 
 app.layout = html.Div([
-    html.H2("Day of Interest"),
+    html.H2("Pick a Date"),
     html.Div(
         [
             dcc.DatePickerSingle(
@@ -53,8 +56,26 @@ app.layout = html.Div([
         ],
         style={'width': '25%',
                'display': 'inline-block'}),
-    dcc.Graph(id='polutionGraph'),
+        dcc.Graph(id='polutionGraph'),
+        dcc.Markdown('''
+#### Water Safety levels in various kayak areas:
+
+Water safety levels vary along the Hudson River and over time. 
+Select a calendar day to see if the location you kayaked on was 
+safe or if you could have been at risk. Higher red levels indicate
+potentially unsafe water. If the area is red on a particular day, 
+it could mean that you have been exposed to dangerous pathogens. 
+
+
+The black line indicates the safe level of toxins.
+
+
+*Note:* safety leves are taken from federal regulations and guidelines.
+Measurments are not taken each day. Please refer to the chart to see when 
+the last count was taken. (Hover over the column you're interested in.)
+''')
 ])
+
 
 
 @app.callback(
@@ -69,12 +90,22 @@ def update_graph(DatePicked):
         # Thanks to:
         # https://stackoverflow.com/questions/43011405/change-bar-color-based-on-value
         return {
-            'data': [
+                'data': [
                 go.Bar(x=dfDay.Site,
-                       y=dfDay.EnteroCount,
+                       y=dfDay.EnteroCount.apply(np.log),
                        text=dfDay.Date,
                        marker=dict(color=Color))
-            ]
+                ],
+                'layout': {'title': 'Safety Levels of Different Ares for {}'
+                           .format(DatePicked),
+                           'shapes':[{
+                                   'type' : 'line',
+                                   'x0' : dfDay.Site.iloc[0],
+                                   'y0' : np.log(110),
+                                   'x1' : dfDay.Site.iloc[-1],
+                                   'y1' : np.log(110)}
+                ]}
+
         }
 
 
