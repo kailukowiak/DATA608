@@ -94,10 +94,18 @@ def update_graph(DatePicked):
                 go.Bar(x=dfDay.Site,
                        y=dfDay.EnteroCount.apply(np.log),
                        text=dfDay.Date,
-                       marker=dict(color=Color))
+                       marker=dict(color=Color),
+                       name='Data for {}'.format(DatePicked)
+                ),
+                go.Bar(x=dfDay.Site,
+                       y=df.groupby('Site')['EnteroCount'].mean().apply(np.log),
+                       marker=dict(color='rgb(158,202,225)'),
+                       name='Average'
+                )
                 ],
                 'layout': {'title': 'Safety Levels of Different Ares for {}'
                            .format(DatePicked),
+                           'barmode':'group',
                            'shapes':[{
                                    'type' : 'line',
                                    'x0' : dfDay.Site.iloc[0],
