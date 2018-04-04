@@ -43,3 +43,6 @@ config.py
 .Rproj.user
 
 *#*
+
+
+.DS_Store
