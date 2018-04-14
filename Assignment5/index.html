@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<meta charset='utf-8'>
+<html>
+  <head>
+</script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+
+
+<h1>Questions For Assignment 5</h1>
+<h2>By Kai Lukowiak. </h2>
+
+
+<h3>Section 2</h3>
+<p>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names..">
+    <script type='text/javascript' src='script.js'></script>
+
+    <script>
+      // https://www.w3schools.com/howto/howto_js_filter_table.asp
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("presidentTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<head>
+
+  <title>Assignment Five</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+
+<h1>Questions For Assignment 5</h1>
+<h2>By Kai Lukowiak. </h2>
+
+
+<h3>Question 1</h3>
+<p>
+A function to reverse text.
+  </p>
+
+<p>
+  <form name = reverseTextForm>
+    <input type = 'text' name="forwardText">
+    <input type="button" value="Reverse Text" onClick=reverseText()>
+
+  </form>
+</p>
+
+<div id="ReverseInput"></div>
+
+<script type="text/javascript">
+  function reverseText(){
+  var input = document.getElementById('ReverseInput')
+  var string = document.reverseTextForm.forwardText.value
+  var revString ='';
+  revString = string.split('').reverse().join('');
+  input.innerHTML = revString
+}
+</script>
+
+
+<h3>Question 2</h3>
+<script type="text/javascript">
+
+document.write('<p>Enter a Number to Check the Frist 20 Multiples of it:</p><br>');
+</script>
+
+<script type="text/javascript">
+
+
+  // https://stackoverflow.com/questions/22464605/convert-a-1d-array-to-2d-array
+  //https://stackoverflow.com/questions/15164655/generate-html-table-from-2d-javascript-array
+
+function createTable(tableData) {
+  var table = document.createElement('table');
+  var tableBody = document.createElement('tbody');
+
+  tableData.forEach(function(rowData) {
+    var row = document.createElement('tr');
+
+    rowData.forEach(function(cellData) {
+      var cell = document.createElement('td');
+      cell.appendChild(document.createTextNode(cellData));
+      row.appendChild(cell);
+    });
+
+    tableBody.appendChild(row);
+  });
+
+  table.appendChild(tableBody);
+  document.body.appendChild(table);
+}
+
+
+
+// y = createTable(newArr)
+
+  function multipleyByN(n){
+  var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+  var arr = arr.map(function(x) { return x * n; });
+
+  var newArr = [];
+  while(arr.length) newArr.push(arr.splice(0,5));
+  return(newArr);
+  }
+function calcOne(){
+    var t = document.getElementById("targetOne");
+    t.innerHTML = createTable(multipleyByN(document.getElementById('numOne').value));
+}
+
+
+  //y = createTable(multipleyByN(4))
+
+
+//document.write(y);
+</script>
+
+<p>
+<form>
+    <input id="numOne" type="number" size="4">
+    <input type="button" value="check" onClick="calcOne();">
+</form>
+</p>
+<div id="targetOne"></div>
+
+
+</body>
+</html>
