@@ -1,10 +1,4 @@
 import pandas as pd
-import plotly as py
-import numpy as np
-
-df = pd.read_csv('results.csv')
-
-
 
 
 def cleaner(df, typeFilter, colDrop, colSelect):
@@ -21,8 +15,6 @@ def cleaner(df, typeFilter, colDrop, colSelect):
     df = df.set_index("Name")
     return df
 
-dfRawV = cleaner(df, 'Raw', 'GL', 'Votes')
-
 def sankeyData(df):
     """
     A non-robust function to reshape data into a format
@@ -34,20 +26,18 @@ def sankeyData(df):
     mVotes = (df.iloc[0:2, 2] - df.iloc[0:2, 1]).tolist()
     return b0+b1+aVotes+mVotes
 
-values = sankeyData(dfRawV)
+def nodeNames():
+    SKL = []
+    candidates = ['Elliot', 'Ford', 'Mulroney', 'Alan']
+    ballots = ['Ballot 1', 'Ballot 2', 'Ballot 3']
+    for i in ballots:
+        for j in candidates:
+            node = i + ' ' + j
+            SKL.append(node)
+    return SKL
 
 
-# Node Names
-SKL = []
-candidates = ['Elliot', 'Ford', 'Mulroney', 'Alan']
-ballots = ['Ballot 1', 'Ballot 2', 'Ballot 3']
-for i in ballots:
-    for j in candidates:
-        node = i + ' ' + j
-        SKL.append(node)
-
-
-def sankeyDiagram(values, title):
+def sankeyDiagram(values, title, SKL):
     data = dict(
         type='sankey',
         node = dict(
@@ -58,7 +48,7 @@ def sankeyDiagram(values, title):
                 width = 0.5
             ),
             label = SKL,
-            color = list(['blue'] * 12)
+            color = list(['blue', 'red', 'yellow','green'] * 3)
         ),
         link = dict(
             source = [0,1,2,4,5,3,3,3,6,6], # This is a non- robust way to make it work
@@ -76,13 +66,3 @@ def sankeyDiagram(values, title):
     fig = dict(data=[data], layout=layout)
     return fig
 
-
-fig = sankeyDiagram(values, 'Riding in the 2018 PC Leadership')
-py.offline.plot(fig, validate=False)
-
-
-dfCount = cleaner(df, 'Raw', 'GL', 'Points')
-countValues = sankeyData(dfCount)
-figCount = sankeyDiagram(countValues, 'Points Won in the 2018 PC leadership Race')
-
-py.offline.plot(figCount, validate = False)
