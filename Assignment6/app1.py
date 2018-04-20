@@ -55,8 +55,8 @@ the points system used in the PC race.
                 dcc.Dropdown(
                 id='VorR',
                 options=[
-                        {'label': 'Votes View', 'value': 'Votes'},
-                        {'label': 'Ridings View', 'value': 'Points'}
+                        {'label': 'Votes Results', 'value': 'Votes'},
+                        {'label': 'Points Results', 'value': 'Points'}
                 ],
                         value='Points',),
                 
