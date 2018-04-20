@@ -4,8 +4,6 @@ from skFunctions import smallMultiples
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.graph_objs as go
-from plotly import tools
 import base64
 
 # Dash app
@@ -25,13 +23,35 @@ app.layout = html.Div([
 
                 html.Div([
                         dcc.Markdown('''
-## Ontario Provincial PC Leadership 
-After a rather dramatic resignation of the Ontario PC leader, 
+## Ontario Provincial PC Leadership Race
+After a rather dramatic resignation of the Ontario PC leader, Patric Brown, was 
+ousted over sexual harassment allegations.
 
+The resulting leadership race saw a dramatic finish between the top two as Mr 
+Ford one more point (calculated by counting the number of people in a riding up 
+to 100 and then assigning 100 to the result after that).
 
-'''),], className='six columns'),     
+Ms Elliott ended with more of the popular votes but fewer points, leading to a 
+confusing and almost contested recount/challenge.[Pundits](http://www.cbc.ca/news/politics/grenier-pc-leadership-results-1.4571699) 
+have theorized that Ms Granic Allen's voters delivered the victory mostly because
+ Mr Ford mimicked her stance on sexual education in schools, taking a more 
+conservative stance.
+
+The Data was collected from [Wikipedia](https://en.wikipedia.org/wiki/Progressive
+Conservative_Party_of_Ontario_leadership_election,_2018).
+
+This data is interesting because Mr Ford ran on a populist agenda, similar to 
+Mr Trump's campaign (although less fraught with controversy). In fact, in 
+Canada, Mr Trump was often compared to Mr Ford's late brother and former mayor 
+of Toronto Rob. This analysis is an attempt to give insight into the alliance 
+between religious candidates making alliances with populists. 
+
+This data also highlights the importance of differing election styles, such as 
+the points system used in the PC race. 
+'''),], className='ten columns'),     
                 ], className='row'),
         html.Div([
+                html.H3('Chose Total Votes or Total Points'),
                 dcc.Dropdown(
                 id='VorR',
                 options=[

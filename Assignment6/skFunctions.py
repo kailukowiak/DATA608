@@ -94,11 +94,19 @@ def smallMultiples(df, title):
         name='Round 3',
         marker=dict(color=colors)
     )
-    fig = tools.make_subplots(rows=1, cols=3, subplot_titles=('Ballot 1',
-                                                              'Ballot 2',
-                                                              'Ballot 3'))
+    fig = tools.make_subplots(rows=1,
+                              cols=3,
+                              subplot_titles=('Ballot 1',
+                                              'Ballot 2',
+                                              'Ballot 3'))
     fig.append_trace(trace1, 1, 1)
     fig.append_trace(trace2, 1, 2)
     fig.append_trace(trace3, 1, 3)
-    fig['layout'].update(height=400, width=700, title=title, showlegend=False)
+    fig['layout'].update(height=400,
+                         width=700,
+                         title=title,
+                         showlegend=False)
+    fig['layout']['yaxis1'].update(showgrid=False)
+    fig['layout']['yaxis2'].update(showgrid=False)
+    fig['layout']['yaxis3'].update(showgrid=False)
     return fig
