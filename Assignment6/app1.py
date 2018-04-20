@@ -1,16 +1,36 @@
 import pandas as pd
-from skFunctions import cleaner, sankeyData, nodeNames, sankeyDiagram, smallMultiples
+from skFunctions import cleaner, sankeyData, nodeNames, sankeyDiagram
+from skFunctions import smallMultiples
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 from plotly import tools
+import base64
 
 # Dash app
 app = dash.Dash()
 
 
+image_filename = 'ONPCLogo.png' # replace with your own image
+encoded_image = base64.b64encode(open(image_filename, 'rb').read())
+
+
 app.layout = html.Div([
+        html.Div([
+                html.Div([
+                         html.Img(src='data:image/png;base64,{}'
+                                  .format(encoded_image.decode()))
+                ], className='two columns'),
+
+                html.Div([
+                        dcc.Markdown('''
+## Ontario Provincial PC Leadership 
+After a rather dramatic resignation of the Ontario PC leader, 
+
+
+'''),], className='six columns'),     
+                ], className='row'),
         html.Div([
                 dcc.Dropdown(
                 id='VorR',
@@ -48,7 +68,8 @@ def update_graph(VorR):
         df = cleaner(df, 'Raw', 'GL', VorR)
         df = sankeyData(df)
         fig = sankeyDiagram(df,
-                            '{} Won by Cadidate in the 2018 PC Leadership Race'.format(VorR),
+                            '{} Won by Cadidate in the 2018 PC Leadership Race'
+                            .format(VorR),
                          SKL)
         return fig
 

@@ -50,7 +50,7 @@ def sankeyDiagram(values, title, SKL):
                 width = 0.5
             ),
             label = SKL,
-            color = list(['blue', 'red', 'yellow','green'] * 3)
+            color = list(["#EB1A2C","#2C338E" ,'#2AB359' , "#ABE0AC"] * 3)
         ),
         link = dict(
             source = [0,1,2,4,5,3,3,3,6,6], # This is a non- robust way to make it work
@@ -69,6 +69,7 @@ def sankeyDiagram(values, title, SKL):
     return fig
 
 def smallMultiples(df, title):
+    colors = ["#EB1A2C","#2C338E" ,'#2AB359' , "#ABE0AC"]
     b1=df.iloc[:, 0].tolist()
     b2=df.iloc[:, 1].tolist()
     b3=df.iloc[:, 2].tolist()
@@ -78,21 +79,26 @@ def smallMultiples(df, title):
     trace1 = go.Bar(
         x=names,
         y=b1,
-        name='Round 1'
+        name='Round 1',
+        marker=dict(color=colors)
     )
     trace2 = go.Bar(
         x=names,
         y=b2,
-        name='Round 2'
+        name='Round 2',
+        marker=dict(color=colors)
     )
     trace3 = go.Bar(
         x=names,
         y=b3,
-        name='Round 3'
+        name='Round 3',
+        marker=dict(color=colors)
     )
-    fig = tools.make_subplots(rows=1, cols=3)
+    fig = tools.make_subplots(rows=1, cols=3, subplot_titles=('Ballot 1',
+                                                              'Ballot 2',
+                                                              'Ballot 3'))
     fig.append_trace(trace1, 1, 1)
     fig.append_trace(trace2, 1, 2)
     fig.append_trace(trace3, 1, 3)
-    fig['layout'].update(height=400, width=600, title=title)
+    fig['layout'].update(height=400, width=700, title=title, showlegend=False)
     return fig
