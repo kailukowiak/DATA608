@@ -94,5 +94,5 @@ def smallMultiples(df, title):
     fig.append_trace(trace1, 1, 1)
     fig.append_trace(trace2, 1, 2)
     fig.append_trace(trace3, 1, 3)
-    fig['layout'].update(height=600, width=600, title=title)
+    fig['layout'].update(height=400, width=600, title=title)
     return fig

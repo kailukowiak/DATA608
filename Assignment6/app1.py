@@ -9,20 +9,34 @@ from plotly import tools
 # Dash app
 app = dash.Dash()
 
+
 app.layout = html.Div([
-        html.H3("Pick Votes or Count"),
-        dcc.Dropdown(
+        html.Div([
+                dcc.Dropdown(
                 id='VorR',
                 options=[
                         {'label': 'Votes View', 'value': 'Votes'},
                         {'label': 'Ridings View', 'value': 'Points'}
                 ],
-                value='Points',
-        ),
-        dcc.Graph(id='sankeyGraph'),
-        dcc.Graph(id='smGraph')
-],style={'width': '49%', 'display': 'inline-block', 'vertical-align': 'middle'})
+                        value='Points',),
+                
+        ]),
+    html.Div([
+        html.Div([
+            html.H3('Sankey Diagram of Voting Preferences'),
+                 dcc.Graph(id='sankeyGraph')
+        ], className="six columns"),
 
+        html.Div([
+            html.H3('By Round Results'),
+            dcc.Graph(id='smGraph')
+        ], className="six columns"),
+    ], className="row")
+])
+
+app.css.append_css({
+    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
+})
 
 
 @app.callback(
