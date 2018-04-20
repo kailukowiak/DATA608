@@ -1,4 +1,6 @@
 import pandas as pd
+import plotly.graph_objs as go
+from plotly import tools
 
 
 def cleaner(df, typeFilter, colDrop, colSelect):
@@ -66,3 +68,31 @@ def sankeyDiagram(values, title, SKL):
     fig = dict(data=[data], layout=layout)
     return fig
 
+def smallMultiples(df, title):
+    b1=df.iloc[:, 0].tolist()
+    b2=df.iloc[:, 1].tolist()
+    b3=df.iloc[:, 2].tolist()
+
+    names=df.index.tolist()
+
+    trace1 = go.Bar(
+        x=names,
+        y=b1,
+        name='Round 1'
+    )
+    trace2 = go.Bar(
+        x=names,
+        y=b2,
+        name='Round 2'
+    )
+    trace3 = go.Bar(
+        x=names,
+        y=b3,
+        name='Round 3'
+    )
+    fig = tools.make_subplots(rows=1, cols=3)
+    fig.append_trace(trace1, 1, 1)
+    fig.append_trace(trace2, 1, 2)
+    fig.append_trace(trace3, 1, 3)
+    fig['layout'].update(height=600, width=600, title=title)
+    return fig
