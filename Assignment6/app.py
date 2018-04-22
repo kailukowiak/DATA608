@@ -1,88 +1,106 @@
 import pandas as pd
-import plotly as py
-import numpy as np
+from skFunctions import cleaner, sankeyData, nodeNames, sankeyDiagram
+from skFunctions import smallMultiples
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import base64
 
-df = pd.read_csv('results.csv')
+# Dash app
+app = dash.Dash()
 
-
-
-
-def cleaner(df, typeFilter, colDrop, colSelect):
-    '''A function to clean df
-    df = DataFrame
-    typeFilter = Raw/Percent
-    colDrop = 'GL'
-    colSelect = Votes/Points
-    '''
-    colSelect = colSelect+'|Name' # NEcessary so name is not dropped
-    df = df[df.Type == typeFilter] # Selects rows
-    df = df[df.columns.drop(list(df.filter(regex=colDrop)))]
-    df = df.filter(regex=colSelect)
-    df = df.set_index("Name")
-    return df
-
-dfRawV = cleaner(df, 'Raw', 'GL', 'Votes')
-
-def sankeyData(df):
-    """
-    A non-robust function to reshape data into a format
-    readable by plotly
-    """
-    b0 = df.iloc[0:3, 0].tolist()
-    b1 = df.iloc[0:2, 1].tolist()
-    aVotes = (df.iloc[0:3, 1] - df.iloc[0:3, 0]).tolist()
-    mVotes = (df.iloc[0:2, 2] - df.iloc[0:2, 1]).tolist()
-    return b0+b1+aVotes+mVotes
-
-values = sankeyData(dfRawV)
+image_filename = 'ONPCLogo.png' # replace with your own image
+encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 
-# Node Names
-SKL = []
-candidates = ['Elliot', 'Ford', 'Mulroney', 'Alan']
-ballots = ['Ballot 1', 'Ballot 2', 'Ballot 3']
-for i in ballots:
-    for j in candidates:
-        node = i + ' ' + j
-        SKL.append(node)
+app.layout = html.Div([
+        html.Div([
+                html.Div([
+                         html.Img(src='data:image/png;base64,{}'
+                                  .format(encoded_image.decode()))
+                ], className='two columns'),
+
+                html.Div([
+                        dcc.Markdown('''
+## Ontario Provincial PC Leadership Race
+After a rather dramatic resignation of the Ontario PC leader, Patric Brown, was 
+ousted over sexual harassment allegations.
+
+The resulting leadership race saw a dramatic finish between the top two as Mr 
+Ford one more point (calculated by counting the number of people in a riding up 
+to 100 and then assigning 100 to the result after that).
+
+Ms Elliott ended with more of the popular votes but fewer points, leading to a 
+confusing and almost contested recount/challenge.[Pundits](http://www.cbc.ca/news/politics/grenier-pc-leadership-results-1.4571699) 
+have theorized that Ms Granic Allen's voters delivered the victory mostly because
+ Mr Ford mimicked her stance on sexual education in schools, taking a more 
+conservative stance.
+
+The Data was collected from [Wikipedia](https://en.wikipedia.org/wiki/Progressive
+Conservative_Party_of_Ontario_leadership_election,_2018).
+
+This data is interesting because Mr Ford ran on a populist agenda, similar to 
+Mr Trump's campaign (although less fraught with controversy). In fact, in 
+Canada, Mr Trump was often compared to Mr Ford's late brother and former mayor 
+of Toronto Rob. This analysis is an attempt to give insight into the alliance 
+between religious candidates making alliances with populists. 
+
+This data also highlights the importance of differing election styles, such as 
+the points system used in the PC race. 
+'''),], className='ten columns'),     
+                ], className='row'),
+        html.Div([
+                html.H3('Chose Total Votes or Total Points'),
+                dcc.Dropdown(
+                id='VorR',
+                options=[
+                        {'label': 'Votes Results', 'value': 'Votes'},
+                        {'label': 'Points Results', 'value': 'Points'}
+                ],
+                        value='Points',),
+                
+        ]),
+    html.Div([
+        html.Div([
+            html.H3('Sankey Diagram of Voting Preferences'),
+                 dcc.Graph(id='sankeyGraph')
+        ], className="six columns"),
+
+        html.Div([
+            html.H3('By Round Results'),
+            dcc.Graph(id='smGraph')
+        ], className="six columns"),
+    ], className="row")
+])
+
+app.css.append_css({
+    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
+})
 
 
-def sankeyDiagram(values, title):
-    data = dict(
-        type='sankey',
-        node = dict(
-            pad = 15,
-            thickness = 20,
-            line = dict(
-                color = "black",
-                width = 0.5
-            ),
-            label = SKL,
-            color = list(['blue'] * 12)
-        ),
-        link = dict(
-            source = [0,1,2,4,5,3,3,3,6,6], # This is a non- robust way to make it work
-            target = [4,5,6,8,9,4,5,6,8,9],
-            value = values
-        ))
-
-    layout =  dict(
-        title = title,
-        font = dict(
-            size = 10
-        )
-    )
-
-    fig = dict(data=[data], layout=layout)
-    return fig
+@app.callback(
+    dash.dependencies.Output('sankeyGraph', 'figure'),
+    [dash.dependencies.Input('VorR', 'value')])
+def update_graph(VorR):
+        df = pd.read_csv('results.csv')
+        SKL = nodeNames()
+        df = cleaner(df, 'Raw', 'GL', VorR)
+        df = sankeyData(df)
+        fig = sankeyDiagram(df,
+                            '{} Won by Cadidate in the 2018 PC Leadership Race'
+                            .format(VorR),
+                         SKL)
+        return fig
 
 
-fig = sankeyDiagram(values, 'Riding in the 2018 PC Leadership')
-py.offline.plot(fig, validate=False)
+@app.callback(
+    dash.dependencies.Output('smGraph', 'figure'),
+    [dash.dependencies.Input('VorR', 'value')])
+def update_sm(VorR):
+        df = pd.read_csv('results.csv')
+        df = cleaner(df, 'Raw', 'GL', VorR)
+        smg=smallMultiples(df, '{} Won by Round'.format(VorR))
+        return smg
 
-
-dfCount = cleaner(df, 'Raw', 'GL', 'Points')
-countValues = sankeyData(dfCount)
-figCount = sankeyDiagram(countValues, 'Points Won in the 2018 PC leadership Race')
-
-py.offline.plot(figCount, validate = False)
+if __name__ == '__main__':
+    app.run_server(debug=True)
