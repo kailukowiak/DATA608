@@ -10,7 +10,13 @@ import base64
 server = Flask(__name__)
 
 # Dash app
-app = dash.Dash()
+app = dash.Dash(name='DockerTestApp',
+                server=server,
+                csrf_protect=False)
+colors = {
+    'background': '#111111',
+    'text': '#7FDBFF'
+}
 
 image_filename = 'ONPCLogo.png' # replace with your own image
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
@@ -26,28 +32,32 @@ app.layout = html.Div([
                 html.Div([
                         dcc.Markdown('''
 ## Ontario Provincial PC Leadership Race
-After a rather dramatic resignation of the Ontario PC leader, Patric Brown, was 
-ousted over sexual harassment allegations.
+After the  dramatic resignation of the Ontario Progressive Conservative (PC)
+party leader, Patrick Brown, the party ran a leadership contest.
 
-The resulting leadership race saw a dramatic finish between the top two as Mr 
-Ford one more point (calculated by counting the number of people in a riding up 
+There were four candidates on the final ballot. Ms Elliot, Ms Mulroney, Mr Ford 
+and Ms Alan.
+
+
+The resulting leadership race saw a close finish between the top two 
+contenders as Mr Ford one more points (calculated by counting the number of 
+people in a riding up 
 to 100 and then assigning 100 to the result after that).
 
 Ms Elliott ended with more of the popular votes but fewer points, leading to a 
-confusing and almost contested recount/challenge.[Pundits](http://www.cbc.ca/news/politics/grenier-pc-leadership-results-1.4571699) 
-have theorized that Ms Granic Allen's voters delivered the victory mostly because
- Mr Ford mimicked her stance on sexual education in schools, taking a more 
-conservative stance.
+confusing and almost contested recount/challenge. [Pundits](http://www.cbc.ca/news/politics/grenier-pc-leadership-results-1.4571699) 
+have theorized that Ms Allen's voters delivered the victory to Mr Ford mostly because
+Mr Ford mimicked her stance on sexual education in schools, taking a more 
+conservative position.
 
 The Data was collected from [Wikipedia](https://en.wikipedia.org/wiki/ProgressiveConservative_Party_of_Ontario_leadership_election,_2018).
 
 This data is interesting because Mr Ford ran on a populist agenda, similar to 
-Mr Trump's campaign (although less fraught with controversy). In fact, in 
-Canada, Mr Trump was often compared to Mr Ford's late brother and former mayor 
-of Toronto Rob. This analysis is an attempt to give insight into the alliance 
-between religious candidates making alliances with populists. 
+Mr Trump's campaign. In fact, in Canada, Mr Trump was often compared to Mr 
+Ford's late brother and former mayor of Toronto, Rob Ford. 
 
-This data also highlights the importance of differing election styles, such as 
+This analysis gives insight into the alliance between religious and populist 
+candidates as well as  highlighting the importance of differing election styles, such as 
 the points system used in the PC race. 
 '''),], className='ten columns'),     
                 ], className='row'),
