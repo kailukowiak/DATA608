@@ -34,19 +34,17 @@ app.layout = html.Div([
 ## Ontario Provincial PC Leadership Race
 After the  dramatic resignation of the Ontario Progressive Conservative (PC)
 party leader, Patrick Brown, the party ran a leadership contest.
-
 There were four candidates on the final ballot. Ms Elliot, Ms Mulroney, Mr Ford 
 and Ms Alan.
 
 
 The resulting leadership race saw a close finish between the top two 
-contenders as Mr Ford one more points (calculated by counting the number of 
+contenders as Mr Ford won more points (calculated by counting the number of 
 people in a riding up 
 to 100 and then assigning 100 to the result after that).
-
 Ms Elliott ended with more of the popular votes but fewer points, leading to a 
 confusing and almost contested recount/challenge. [Pundits](http://www.cbc.ca/news/politics/grenier-pc-leadership-results-1.4571699) 
-have theorized that Ms Allen's voters delivered the victory to Mr Ford mostly because
+have theorized that Ms Alan's voters delivered the victory to Mr Ford mostly because
 Mr Ford mimicked her stance on sexual education in schools, taking a more 
 conservative position.
 
@@ -54,16 +52,14 @@ The Data was collected from [Wikipedia](https://en.wikipedia.org/wiki/Progressiv
 
 This data is interesting because Mr Ford ran on a populist agenda, similar to 
 Mr Trump's campaign. In fact, in Canada, Mr Trump was often compared to Mr 
-Ford's late brother and former mayor of Toronto, Rob Ford. 
-
-This analysis gives insight into the alliance between religious and populist 
+Ford's late brother and former mayor of Toronto, Rob Ford. This analysis gives insight into the alliance between religious and populist 
 candidates as well as  highlighting the importance of differing election styles, such as 
 the points system used in the PC race. 
 '''),], className='ten columns'),     
                 ], className='row'),
         html.Div([
                 html.H3('Chose Total Votes or Total Points'),
-                dcc.Dropdown(
+                dcc.RadioItems(
                 id='VorR',
                 options=[
                         {'label': 'Votes Results', 'value': 'Votes'},
