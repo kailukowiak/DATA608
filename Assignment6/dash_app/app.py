@@ -1,3 +1,4 @@
+from flask import Flask
 import pandas as pd
 from skFunctions import cleaner, sankeyData, nodeNames, sankeyDiagram
 from skFunctions import smallMultiples
@@ -5,6 +6,8 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import base64
+
+server = Flask(__name__)
 
 # Dash app
 app = dash.Dash()
@@ -36,8 +39,7 @@ have theorized that Ms Granic Allen's voters delivered the victory mostly becaus
  Mr Ford mimicked her stance on sexual education in schools, taking a more 
 conservative stance.
 
-The Data was collected from [Wikipedia](https://en.wikipedia.org/wiki/Progressive
-Conservative_Party_of_Ontario_leadership_election,_2018).
+The Data was collected from [Wikipedia](https://en.wikipedia.org/wiki/ProgressiveConservative_Party_of_Ontario_leadership_election,_2018).
 
 This data is interesting because Mr Ford ran on a populist agenda, similar to 
 Mr Trump's campaign (although less fraught with controversy). In fact, in 
