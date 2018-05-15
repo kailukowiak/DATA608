@@ -7,6 +7,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import base64
 
+
 server = Flask(__name__)
 
 # Dash app
@@ -110,5 +111,6 @@ def update_sm(VorR):
         smg=smallMultiples(df, '{} Won by Round'.format(VorR))
         return smg
 
+    
 if __name__ == '__main__':
-    app.run_server(debug=True)
+        app.run_server(debug=True)
