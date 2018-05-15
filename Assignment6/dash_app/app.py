@@ -19,9 +19,16 @@ colors = {
     'text': '#7FDBFF'
 }
 
-image_filename = 'ONPCLogo.png' # replace with your own image
+image_filename = 'ONPCLogo.png' 
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
+b1Image = 'Ballot1.png'
+b2Image = 'Ballot2.png'
+b3Image = 'Ballot3.png'
+
+encoded_imageB1 = base64.b64encode(open(b1Image, 'rb').read())
+encoded_imageB2 = base64.b64encode(open(b2Image, 'rb').read())
+encoded_imageB3 = base64.b64encode(open(b3Image, 'rb').read())
 
 app.layout = html.Div([
         html.Div([
@@ -79,8 +86,20 @@ the points system used in the PC race.
             html.H3('By Round Results'),
             dcc.Graph(id='smGraph')
         ], className="six columns"),
-    ], className="row")
+    ], className="row"),
+        html.Div([
+                html.Div([
+                        html.Img(src='data:image/png;base64,{}'.format(encoded_imageB1.decode()))
+                ], className='four columns'),
+        html.Div([
+                html.Img(src='data:image/png;base64,{}'.format(encoded_imageB2.decode()))
+                ], className='four columns'),
+        html.Div([
+                html.Img(src='data:image/png;base64,{}'.format(encoded_imageB3.decode()))
+                ], className='four columns'),
+                ], className='row')
 ])
+                
 
 app.css.append_css({
     'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
